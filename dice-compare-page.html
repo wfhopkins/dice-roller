@@ -8,14 +8,19 @@
   <link rel="icon" type="image/x-icon" href="./favicon.ico" sizes="48x48" ><!-- REVISED (Aug 11, 2023)! -->
   <link rel="icon" href="./favicon.svg" sizes="any" type="image/svg+xml"><!-- REVISED (Aug 11, 2023)! -->
   <link rel="apple-touch-icon" href="./apple-touch-icon.png"/>
-  <link rel="manifest" href="./site.webmanifest" />
+  <!-- <link rel="manifest" href="./site.webmanifest" /> -->
   
   <script src="./dice-roll-compare.js"></script>
   <title>Dice Roller</title>
 </head>
 <body>
+  <h1>Roll the Dice!</h1>
+
+  <div id="player-selection">
+    <input type="number" value="" id="players" name="num-of-players" min="1" max="1000" />
+  </div>
+    <br/>
   <div id="dice-buttons">
-    <h1>Roll the Dice!</h1>
     <button id="D4" data-sides="4">D4</button>
     <button id="D6" data-sides="6">D6</button>
     <button id="D8" data-sides="8">D8</button>
@@ -24,6 +29,7 @@
     <button id="D20" data-sides="20">D20</button>
     <button id="D100" data-sides="100">D100</button>
   </div>
+
   <div id="results">
     <p id="which-die"></p>
     <p id="P1Roll"></p>

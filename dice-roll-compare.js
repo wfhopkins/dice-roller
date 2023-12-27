@@ -14,8 +14,24 @@ window.onload = function() {
     return findRandomInt(1, max);
   }
 
+  const playersInput = document.querySelector("#players");
+
+  playersInput.addEventListener('input', function() {
+    const numOfPlayers = parseInt(playersInput.value);
+    console.log(numOfPlayers);
+  });
+
+  // const playersInput = () => {
+  //   const numOfPlayers = document.getElementById("players").value;
+  //   console.log("# of Players: ", numOfPlayers)
+  // }
+
+  // playersInput();
+  // console.log("Players Input: ", playersInput());
+
+
   // Compare each player's die roll and return result
-  const compareRolls = (numOfSides) => {
+  const compareRolls = (numOfSides, numOfPlayers) => {
 
     const player1 = rollD(numOfSides);
       // console.log("P1:", player1);
