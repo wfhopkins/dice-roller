@@ -33,6 +33,7 @@ window.onload = function() {
     for (let i = 1; i <= numOfPlayers; i++) {
       players.push(`Player ${i}`)
     }
+    console.log("Players #:", players);
     return players;
   }
 
@@ -41,41 +42,66 @@ window.onload = function() {
 
 
     players.forEach(player => {
+      const playerContainer = document.createElement("div");
+
       const playerRollResult = document.createElement("p");
       playerRollResult.textContent = player;
-      playerListContainer.appendChild(playerRollResult);
+      playerContainer.appendChild(playerRollResult);
+    
+      playerListContainer.appendChild(playerContainer);
     });
+
+    let numOfSides = "";
 
   // Compare each player's die roll and return result
   const compareRolls = (numOfSides, players) => {
     players.forEach(player => {
       const playerDiceRoll = rollD(numOfSides);
       console.log(`${player} rolled: ${playerDiceRoll}`);
-      document.getElementById("#player-list").innerHTML = `Player ${players[i]} Roll: ${playerDiceRoll}`;
-    })
-  };
+
+      // document.getElementById("player-list").innerHTML = `${player} Roll: ${playerDiceRoll}`;
+      const playerContainer = getPlayerContainer(player);
+      if (playerContainer) {
+        const playerRollResult = document.createElement("span");
+        playerRollResult.textContent = ` Roll: ${playerDiceRoll}`;
+        playerContainer.appendChild(playerRollResult);
+      } else {
+        console.error(`Container not found for player: ${player}`);
+      }
+    });
+
 
     // Update HTML to reflect results of die roll
     document.getElementById("which-die").innerHTML = `D${numOfSides}`;
-  }
+  };
+
+  // Function to ensure each players dice roll is updated correctly
+  const getPlayerContainer = (player) => {
+    const playerContainers = document.querySelectorAll("#player-list div");
+    for (const container of playerContainers) {
+      const playerName = container.querySelector("p").textContent;
+      if (playerName === player) {
+        return container;
+      }
+    }
+    return null;
+  };
 
   // Add onclick listener to each button and
   // execute compare roll with the max val given by the button pressed
   const buttons = document.querySelectorAll("button");
 
-  let numOfSides = "";
-
   buttons.forEach(button => {
     button.addEventListener('click', function() {
-    const buttonId = this.id;
-    numOfSides = parseInt(this.dataset.sides);
-    // console.log("buttonId", buttonId)
-    // console.log("numOfSides", numOfSides)
-    compareRolls(numOfSides, players);
-    })
+      const buttonId = this.id;
+      numOfSides = parseInt(this.dataset.sides);
+      // console.log("buttonId", buttonId)
+      // console.log("numOfSides", numOfSides)
+      compareRolls(numOfSides, players);
+    });
   });
 };
-
+};
 
   // OG Code for two player game only
     // const player1 = rollD(numOfSides);
