@@ -55,7 +55,7 @@ window.onload = function() {
       const playerContainer = getPlayerContainer(player);
       if (playerContainer) {
         const playerRollResult = document.createElement("span");
-        playerRollResult.textContent = ` Roll: ${playerDiceRoll}`;
+        playerRollResult.textContent = ` D${numOfSides} Roll: ${playerDiceRoll}`;
         playerContainer.appendChild(playerRollResult);
       } else {
         console.error(`Container not found for player: ${player}`);
