@@ -16,16 +16,7 @@ window.onload = function() {
 
   const playersInput = document.querySelector("#players");
   const playerListContainer = document.querySelector("#player-list");
-
-  // Find and save the current value input by the user as the Number of Players 
-  playersInput.addEventListener('input', function() {
-    const numOfPlayers = parseInt(playersInput.value);
-    console.log("Number of Players:", numOfPlayers);
-    
-  // Create a list from the players and add them to the HTML
-    const players = createPlayerList(numOfPlayers);
-    insertPlayerListIntoHTML(players);
-  });
+  let numOfSides = "";
 
   // Function to create players equal to the input value
   const createPlayerList = (numOfPlayers) => {
@@ -50,12 +41,13 @@ window.onload = function() {
     
       playerListContainer.appendChild(playerContainer);
     });
-
-    let numOfSides = "";
+  };
 
   // Compare each player's die roll and return result
-  const compareRolls = (numOfSides, players) => {
-    players.forEach(player => {
+  const compareRolls = (numOfSides, numOfPlayers) => {
+    // players.forEach(player => {
+    for (let i= 1; i <= numOfPlayers; i++) {
+      const player = `Player ${i}`;
       const playerDiceRoll = rollD(numOfSides);
       console.log(`${player} rolled: ${playerDiceRoll}`);
 
@@ -68,8 +60,7 @@ window.onload = function() {
       } else {
         console.error(`Container not found for player: ${player}`);
       }
-    });
-
+    }
 
     // Update HTML to reflect results of die roll
     document.getElementById("which-die").innerHTML = `D${numOfSides}`;
@@ -95,14 +86,23 @@ window.onload = function() {
     button.addEventListener('click', function() {
       const buttonId = this.id;
       numOfSides = parseInt(this.dataset.sides);
+      const numOfPlayers = parseInt(playersInput.value);
       // console.log("buttonId", buttonId)
       // console.log("numOfSides", numOfSides)
-      compareRolls(numOfSides, players);
+      compareRolls(numOfSides, numOfPlayers);
     });
   });
+ 
+  // Find and save the current value input by the user as the Number of Players 
+  playersInput.addEventListener('input', function() {
+    const numOfPlayers = parseInt(playersInput.value);
+    console.log("Number of Players:", numOfPlayers);
+    
+    // Create a list from the players and add them to the HTML
+    const players = createPlayerList(numOfPlayers);
+    insertPlayerListIntoHTML(players);
+  });
 };
-};
-
   // OG Code for two player game only
     // const player1 = rollD(numOfSides);
     //   // console.log("P1:", player1);
