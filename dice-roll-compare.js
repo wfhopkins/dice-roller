@@ -41,15 +41,24 @@ window.onload = function() {
     
       playerListContainer.appendChild(playerContainer);
     });
+    console.log("Players: ", players);
+    return players;
   };
 
   // Compare each player's die roll and return result
+  let playerDiceRoll = 0;
   const compareRolls = (numOfSides, numOfPlayers) => {
-    // players.forEach(player => {
+
+
     for (let i= 1; i <= numOfPlayers; i++) {
       const player = `Player ${i}`;
       const playerDiceRoll = rollD(numOfSides);
       console.log(`${player} rolled: ${playerDiceRoll}`);
+      const playersObject = {};
+      playersObject.player = player;
+      playersObject.playerDiceRoll = playerDiceRoll;
+      console.log("playersObject", playersObject);
+      
 
       // document.getElementById("player-list").innerHTML = `${player} Roll: ${playerDiceRoll}`;
       const playerContainer = getPlayerContainer(player);
@@ -60,6 +69,7 @@ window.onload = function() {
       } else {
         console.error(`Container not found for player: ${player}`);
       }
+      return player, playerDiceRoll;
     }
 
     // Update HTML to reflect results of die roll
@@ -78,6 +88,26 @@ window.onload = function() {
     return null;
   };
 
+  //for each player in the list of players, check their roll result against Winner
+  //once all players have been checked, print winner result or tie
+
+  let winner = 0;
+
+  const findWinner = (player, playerDiceRoll) => {
+    console.log("Players: ", player);
+    player.forEach(player => {
+      if (playerDiceRoll > winner) {
+        winner = player;
+      }
+      console.log("Winner: ", winner);
+      return winner;
+    })
+  };
+
+
+
+
+
   // Add onclick listener to each button and
   // execute compare roll with the max val given by the button pressed
   const buttons = document.querySelectorAll("button");
@@ -90,6 +120,7 @@ window.onload = function() {
       // console.log("buttonId", buttonId)
       // console.log("numOfSides", numOfSides)
       compareRolls(numOfSides, numOfPlayers);
+      // findWinner(players, playerDiceRoll);
     });
   });
  
