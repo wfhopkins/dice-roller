@@ -2,7 +2,6 @@ window.onload = function() {
 
   // GLOBAL VARIABLES
   let players = [];
-  let playerDiceRoll;
   let playerRollsArray = [];
   let playersObject = {};
   let playersInput = document.getElementById('players');
@@ -88,31 +87,44 @@ window.onload = function() {
     return findRandomInt(1, max);
   }
 
-
-  players.forEach(player => {
-    playerRollsArray.push(rollD(numOfSides));
-    console.log("Player", player);
-  });
-
-  console.log("Player Rolls Array: ", playerRollsArray);
+  
 
   const createPlayersObject = (players, playerRollsArray) => {
+    let playerDiceRoll = {};
     // Loop through each player in playersArray
     for (let i = 0; i < players.length; i++) {
-      
       // Create a key-value pair in playersObject
-      playersObject[players[i]] = playerRollsArray[i];
+      playerDiceRoll[players[i]] = playerRollsArray[i];
     }
-    return playersObject;
+    return playerDiceRoll;
   }
+
+  // SHOW PLAYERS OBJECT IN HTML
+  const insertPlayerRollsIntoHTML = () => {
+    let playerRollsContainer = document.getElementById('player-rolls');
+
+    playerRollsContainer.textContent = JSON.stringify(playersObject);
+  };
+
 
   const button = document.getElementById("roll-the-dice");
 
   button.addEventListener("click", () => {
+    playerRollsArray = [];
+    
+    players.forEach(player => {
+      playerRollsArray.push(rollD(numOfSides));
+      console.log("Player", player);
+    });
 
-    createPlayersObject(players, playerRollsArray);
+    console.log("Player Rolls Array: ", playerRollsArray);
+
+    playersObject = createPlayersObject(players, playerRollsArray);
     console.log("PlayersObject: ", playersObject)
+    
+    insertPlayerRollsIntoHTML();
   })
+};
 
 
 
@@ -136,4 +148,3 @@ window.onload = function() {
     -function to create object from those arrays
     -function to compare values in array and return winner
   */
-};
