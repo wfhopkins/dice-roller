@@ -1,73 +1,139 @@
-// let numOfPlayers = parseInt(playersInput.value);
-let numOfPlayers = 4;
-// let numOfSides = parseInt(sidesInput.value);
-let numOfSides = 6;
-let playerDiceRoll;
-let playersArray = [];
-let playerRollsArray = [];
-let playersObject = {};
+window.onload = function() {
 
-// Find a random integer within a set range
-const findRandomInt = (min, max) => {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min) + min);
-}
+  // GLOBAL VARIABLES
+  let players = [];
+  let playerDiceRoll;
+  let playerRollsArray = [];
+  let playersObject = {};
+  let playersInput = document.getElementById('players');
+  const playerListContainer = document.getElementById('player-list');
+  let numOfPlayers = 0;
+  let sidesInput = document.getElementById("dice-select");
+  let rollsInput = document.getElementById("rolls-select");
+  let numOfSides;
+  let numOfRolls;
 
-// rollD() function takes the number of sides as it's max arg
-const rollD = (max) => {
-  return findRandomInt(1, max);
-}
 
-// for (let i = 1; i <= numOfPlayers; i++) {
-//   playersObject["Player " + i] = rollD(numOfSides);
-// }
+// SET THE NUMBER OF PLAYERS
 
-// console.log(playersObject);
+  const createPlayerList = () => {
+    players = [];
+    for (let i = 1; i <= numOfPlayers; i++) {
+      players.push(`Player ${i}`)
+    }
+    playerListContainer.textContent = players.join(", ");
+  };
+  
 
-for (let i = 1; i <= numOfPlayers; i++) {
-  playersArray.push(`Player ${i}`)
-}
+  const insertPlayerListIntoHTML = (players) => {
+    playerListContainer.textContent = players.join(", ");
+  };
 
-console.log("Players Array: ", playersArray);
+  playersInput.addEventListener('input', (event) => {
+    numOfPlayers = parseInt(event.target.value);
+    console.log("Number of Players:", numOfPlayers);
 
-for (player of playersArray) {
-  playerRollsArray.push(rollD(numOfSides))
-}
+    createPlayerList();
+    console.log("Players: ", players);
 
-console.log("Player Rolls Array: ", playerRollsArray);
+    insertPlayerListIntoHTML(players);
+  });
 
-const createPlayersObject = (playersArray, playerRollsArray) => {
-  // Loop through each player in playersArray
-  for (let i = 0; i < playersArray.length; i++) {
-    // Create a key-value pair in playersObject
-    // Key: playersArray[i] (player's name)
-    // Value: playerRollsArray[i] (player's dice roll)
-    playersObject[playersArray[i]] = playerRollsArray[i];
+
+
+// SET THE NUMBER OF SIDES FOR THE DIE ROLL
+
+  sidesInput.addEventListener('input', (event) => {
+    numOfSides = parseInt(event.target.value);
+    console.log("Number of Sides:", numOfSides);
+  })
+
+
+
+// SET THE NUMBER OF DICE THAT EACH PLAYER WILL ROLL
+
+  rollsInput.addEventListener('input', (event) => {
+    numOfRolls = parseInt(event.target.value);
+    console.log("Num of Rolls: ", numOfRolls)
+  })
+
+
+// SET THE WIN CRITERIA FOR THE ROLL
+
+  
+
+
+// THIS IS HOW A DIE ROLL IS MADE
+
+// DO THE ROLL THE DICE! WHEN THE BUTTON IS CLICKED
+// MAKE SURE THERE IS A NUMBER OF PLAYERS
+// MAKE SURE THERE IS A NUMBER OF SIDES
+// MAKE SURE THERE IS A NUMBER OF ROLLS
+// FOR EACH PLAYER DO THE ROLLS UP TO THE NUMBER OF ROLLS FOR THAT NUMBER OF SIDES
+// CREATE AN OBJECT OF KEY VALUE PAIRS FOR EACH PLAYERS BASED ON THEIR ROLL RESULTS
+// USE THE WIN CRITERIA TO DETERMINE A WINNER BY ITERATING THROGUH THE OBJECT
+// RETURN THE VALUE OF WINNER OR TIE
+// ?? PRINT IT INTO THE HTML
+// 
+
+  // Find a random integer within a set range
+  const findRandomInt = (min, max) => {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min);
   }
-  return playersObject;
-}
-createPlayersObject(playersArray, playerRollsArray);
-console.log("PlayersObject: ", playersObject)
+
+  // rollD() function takes the number of sides as it's max arg
+  const rollD = (max) => {
+    return findRandomInt(1, max);
+  }
+
+
+  players.forEach(player => {
+    playerRollsArray.push(rollD(numOfSides));
+    console.log("Player", player);
+  });
+
+  console.log("Player Rolls Array: ", playerRollsArray);
+
+  const createPlayersObject = (players, playerRollsArray) => {
+    // Loop through each player in playersArray
+    for (let i = 0; i < players.length; i++) {
+      
+      // Create a key-value pair in playersObject
+      playersObject[players[i]] = playerRollsArray[i];
+    }
+    return playersObject;
+  }
+
+  const button = document.getElementById("roll-the-dice");
+
+  button.addEventListener("click", () => {
+
+    createPlayersObject(players, playerRollsArray);
+    console.log("PlayersObject: ", playersObject)
+  })
 
 
 
 
-/*
-create button to clear HTML as well
-declare global variable undefined for numberOfPlayers
+
+  /*
+  create button to clear HTML as well
+  declare global variable undefined for numberOfPlayers
 
 
-declare global variable undefined for listOfPlayers
+  declare global variable undefined for listOfPlayers
 
-use numberOfPlayers to make a listOfPlayers update listOfPlayers
+  use numberOfPlayers to make a listOfPlayers update listOfPlayers
 
 
-declare global variable numberOfSides
-separate players input and store value in global variable
-separate dice buttons and store number of sides in global variable
-separate roll button to trigger rolls and take in other functions
-  -function to collect players and collect rolls into arrays
-  -function to create object from those arrays
-  -function to compare values in array and return winner
-*/
+  declare global variable numberOfSides
+  separate players input and store value in global variable
+  separate dice buttons and store number of sides in global variable
+  separate roll button to trigger rolls and take in other functions
+    -function to collect players and collect rolls into arrays
+    -function to create object from those arrays
+    -function to compare values in array and return winner
+  */
+};
