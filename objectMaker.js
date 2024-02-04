@@ -106,6 +106,46 @@ window.onload = function() {
     playerRollsContainer.textContent = JSON.stringify(playersObject);
   };
 
+  // Total player score
+  const findPlayerTotal = (playersObject) => {
+    let playerTotals = {};
+
+    for (let player in playersObject) {
+      let values = playersObject[player];
+      console.log("Values: ", values);
+
+      let total = values.reduce((acc, curr) => acc + curr, 0);
+      console.log("Total: ", total);
+
+      playerTotals[player] = total;
+    }
+    console.log("Player Roll Totals: ", playerTotals);
+    return playerTotals;
+  }
+
+  // Win Conditions
+  const highestRollWins = (players, playerTotals) => {
+    let winner = 0;
+
+
+    for (let i = 0; i <= players.length; i++) {
+      if (playerTotals[players[i]].total > winner) {
+        winner = playerTotals[players[i]];
+      } else if (playerTotals[players[i]] === winner) {
+        let tiedPlayers = [];
+        tiedPlayers.push(players[i]);
+      }
+    }
+
+    if (tiedPlayers) {
+      console.log("It's a Tie!", tiedPlayers);
+    } else {
+      console.log("Winner: ", players.find(player => playerTotals[player] === winner));
+    }
+  }
+
+
+
 
   const button = document.getElementById("roll-the-dice");
 
@@ -113,7 +153,14 @@ window.onload = function() {
     playerRollsArray = [];
     
     players.forEach(player => {
-      playerRollsArray.push(rollD(numOfSides));
+      let eachPlayerRoll = [];
+
+      for (let i = 1; i <= numOfRolls; i++) {
+        eachPlayerRoll.push(rollD(numOfSides));
+      }
+      
+      playerRollsArray.push(eachPlayerRoll);
+
       console.log("Player", player);
     });
 
@@ -123,8 +170,10 @@ window.onload = function() {
     console.log("PlayersObject: ", playersObject)
     
     insertPlayerRollsIntoHTML();
+    highestRollWins();
   })
 };
+
 
 
 
