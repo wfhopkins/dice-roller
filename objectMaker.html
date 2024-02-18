@@ -34,8 +34,20 @@
   </div>
   <br/>
   <div id="rolls-select">
-    <!-- <label for="rolls-select">Number of Rolls:</label> -->
+    <label for="rolls-select">Number of Rolls:</label>
     <input type="number" value="" id="rolls" name="num-of-rolls" min="1" max="1000" />
+  </div>
+  <br/>
+  <label for="win-condition">Win Condition:</label>
+  <div id="win-condition" label="Win Condition">
+    <div>
+      <input type="radio" id="hi-roll" name="win-condition" value="hi-roll" />
+      <label for="hi-roll">High Roll</label>
+    </div>
+    <div>
+      <input type="radio" id="low-roll" name="win-condition" value="low-roll" />
+      <label for="low-roll">Low Roll</label>
+    </div>
   </div>
   <br/>
   <div id="roll-button">
@@ -43,6 +55,9 @@
   </div>
   <br/>
   <div id="player-rolls">
+    <p></p>
+  </div>
+  <div id="player-totals">
     <p></p>
   </div>
 </body>

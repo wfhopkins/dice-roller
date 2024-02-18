@@ -3,6 +3,7 @@ window.onload = function() {
   // GLOBAL VARIABLES
   let players = [];
   let playerRollsArray = [];
+  let playerTotals = {};
   let playersObject = {};
   let playersInput = document.getElementById('players');
   const playerListContainer = document.getElementById('player-list');
@@ -18,7 +19,7 @@ window.onload = function() {
   const createPlayerList = () => {
     players = [];
     for (let i = 1; i <= numOfPlayers; i++) {
-      players.push(`Player ${i}`)
+      players.push(`Player${i}`)
     }
     playerListContainer.textContent = players.join(", ");
   };
@@ -57,23 +58,6 @@ window.onload = function() {
   })
 
 
-// SET THE WIN CRITERIA FOR THE ROLL
-
-  
-
-
-// THIS IS HOW A DIE ROLL IS MADE
-
-// DO THE ROLL THE DICE! WHEN THE BUTTON IS CLICKED
-// MAKE SURE THERE IS A NUMBER OF PLAYERS
-// MAKE SURE THERE IS A NUMBER OF SIDES
-// MAKE SURE THERE IS A NUMBER OF ROLLS
-// FOR EACH PLAYER DO THE ROLLS UP TO THE NUMBER OF ROLLS FOR THAT NUMBER OF SIDES
-// CREATE AN OBJECT OF KEY VALUE PAIRS FOR EACH PLAYERS BASED ON THEIR ROLL RESULTS
-// USE THE WIN CRITERIA TO DETERMINE A WINNER BY ITERATING THROGUH THE OBJECT
-// RETURN THE VALUE OF WINNER OR TIE
-// ?? PRINT IT INTO THE HTML
-// 
 
   // Find a random integer within a set range
   const findRandomInt = (min, max) => {
@@ -108,25 +92,31 @@ window.onload = function() {
 
   // Total player score
   const findPlayerTotal = (playersObject) => {
-    let playerTotals = {};
-
     for (let player in playersObject) {
-      let values = playersObject[player];
-      console.log("Values: ", values);
-
-      let total = values.reduce((acc, curr) => acc + curr, 0);
-      console.log("Total: ", total);
-
+      const total = playersObject[player].reduce((acc, value) => acc + value, 0);
       playerTotals[player] = total;
     }
     console.log("Player Roll Totals: ", playerTotals);
     return playerTotals;
   }
 
+
+  let winCondition = document.getElementsByName("win-condition").value;
+
+  const findWinner = (winCondition) => {
+    if (winCondition = "hi-roll") {
+      highestRollWins();
+    } else {
+      console.log("Low Roll?");
+    }
+  }
+
+
+
+
   // Win Conditions
   const highestRollWins = (players, playerTotals) => {
     let winner = 0;
-
 
     for (let i = 0; i <= players.length; i++) {
       if (playerTotals[players[i]].total > winner) {
@@ -145,7 +135,11 @@ window.onload = function() {
   }
 
 
+  const insertPlayerTotalsIntoHTML = () => {
+    let playerTotalsContainer = document.getElementById('player-totals');
 
+    playerTotalsContainer.textContent = JSON.stringify(playerTotals);
+  };
 
   const button = document.getElementById("roll-the-dice");
 
@@ -161,39 +155,33 @@ window.onload = function() {
       
       playerRollsArray.push(eachPlayerRoll);
 
-      console.log("Player", player);
+      console.log("Player: ", player);
     });
 
     console.log("Player Rolls Array: ", playerRollsArray);
 
     playersObject = createPlayersObject(players, playerRollsArray);
-    console.log("PlayersObject: ", playersObject)
+    console.log("Players Object: ", playersObject)
     
+    findPlayerTotal(playersObject);
+    findWinner(winCondition);
     insertPlayerRollsIntoHTML();
-    highestRollWins();
+    insertPlayerTotalsIntoHTML();
+    // highestRollWins();
   })
 };
 
 
-
-
+// SET THE WIN CRITERIA FOR THE ROLL
+// USE THE WIN CRITERIA TO DETERMINE A WINNER BY ITERATING THROGUH THE OBJECT
+// RETURN THE VALUE OF WINNER OR TIE
 
 
   /*
   create button to clear HTML as well
   declare global variable undefined for numberOfPlayers
 
-
-  declare global variable undefined for listOfPlayers
-
   use numberOfPlayers to make a listOfPlayers update listOfPlayers
-
-
-  declare global variable numberOfSides
-  separate players input and store value in global variable
-  separate dice buttons and store number of sides in global variable
-  separate roll button to trigger rolls and take in other functions
-    -function to collect players and collect rolls into arrays
-    -function to create object from those arrays
-    -function to compare values in array and return winner
+  -function to compare values in array and return winner
   */
+
