@@ -1,5 +1,9 @@
-window.onload = function() {
+import rollD from "./rollD.js";
 
+window.onload = function() {
+  
+  
+  
   // GLOBAL VARIABLES
   let players = [];
   let playerRollsArray = [];
@@ -12,12 +16,14 @@ window.onload = function() {
   let rollsInput = document.getElementById("rolls-select");
   let numOfSides;
   let numOfRolls;
+  let winCondition;
 
 
 // SET THE NUMBER OF PLAYERS
 
   const createPlayerList = () => {
     players = [];
+    console.log("players at createPlayerList: ", players);
     for (let i = 1; i <= numOfPlayers; i++) {
       players.push(`Player${i}`)
     }
@@ -29,9 +35,10 @@ window.onload = function() {
     playerListContainer.textContent = players.join(", ");
   };
 
+
   playersInput.addEventListener('input', (event) => {
     numOfPlayers = parseInt(event.target.value);
-    console.log("Number of Players:", numOfPlayers);
+    console.log("Number of Players: ", numOfPlayers);
 
     createPlayerList();
     console.log("Players: ", players);
@@ -59,17 +66,17 @@ window.onload = function() {
 
 
 
-  // Find a random integer within a set range
-  const findRandomInt = (min, max) => {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min) + min);
-  }
+  // // Find a random integer within a set range
+  // const findRandomInt = (min, max) => {
+  //   min = Math.ceil(min);
+  //   max = Math.floor(max);
+  //   return Math.floor(Math.random() * (max - min) + min);
+  // }
 
-  // rollD() function takes the number of sides as it's max arg
-  const rollD = (max) => {
-    return findRandomInt(1, max);
-  }
+  // // rollD() function takes the number of sides as it's max arg
+  // const rollD = (max) => {
+  //   return findRandomInt(1, max);
+  // }
 
   
 
@@ -80,6 +87,7 @@ window.onload = function() {
       // Create a key-value pair in playersObject
       playerDiceRoll[players[i]] = playerRollsArray[i];
     }
+    console.log("Player Dice Roll: ", playerDiceRoll)
     return playerDiceRoll;
   }
 
@@ -101,38 +109,124 @@ window.onload = function() {
   }
 
 
-  let winCondition = document.getElementsByName("win-condition").value;
+  // Radio buttons for selecting Win Condition
+  let winConElement = document.getElementById("win-condition");
+
+  let winConRadioButtons = winConElement.querySelectorAll("input");
+
+  winConRadioButtons.forEach(radioButton => {
+    radioButton.addEventListener("input", (event) => {
+
+      if (event.target.value === "hi-roll") {
+        winCondition = "hi-roll";
+      } else {
+        winCondition = "low-roll" ;
+      }
+      console.log("Win Condition: ", winCondition);
+      return winCondition
+    })
+  });
+
 
   const findWinner = (winCondition) => {
     if (winCondition = "hi-roll") {
-      highestRollWins();
+      highestRollWins(players, playerTotals);
     } else {
-      console.log("Low Roll?");
+      lowestRollWins(players, playerTotals);
     }
-  }
-
-
+  };
 
 
   // Win Conditions
-  const highestRollWins = (players, playerTotals) => {
-    let winner = 0;
 
-    for (let i = 0; i <= players.length; i++) {
-      if (playerTotals[players[i]].total > winner) {
-        winner = playerTotals[players[i]];
-      } else if (playerTotals[players[i]] === winner) {
-        let tiedPlayers = [];
-        tiedPlayers.push(players[i]);
+  // // High Roll Win Condition
+  // const highestRollWins = (players, playerTotals) => {
+  //   console.log("Players: ", players);
+  //   let winner = 0;
+  //   let tiedPlayers = [];
+
+  //   // let playersNumber = Object.keys(players).length;
+  //   // console.log("Player Number: ", playersNumber);
+    
+  //   // console.log("Player 1 total?: ", playerTotals.Player1);
+  //   // console.log("Player 2 total?: ", playerTotals.Player2);
+
+  //   for (i = 0; i < playersNumber; i++) {
+  //     players.forEach(player => {
+  //       if (playerTotals[player] > winner) {
+  //         winner = player;
+  //         console.log("Winner: ", winner, playerTotals[player]);
+  //       }
+  //   });
+
+
+
+  const highestRollWins = (players, playerTotals) => {
+    console.log("Players: ", players);
+    console.log("Player Totals: ", playerTotals);
+
+    let obj = Object.assign({}, players);
+    console.log(JSON.stringify(obj));
+
+
+    
+    let winner = 0;
+  };
+  
+
+
+
+    // let playerOne = playerTotals.Player1;
+    // let playerTwo = playerTotals.Player2;
+
+    // if (playerOne > playerTwo) {
+    //   console.log("Winner is: ", players[0]);
+    // } else {
+    //   console.log("Winner is: ", players[1]);
+    // };
+
+
+    // for (let i = 0; i < playersNumber; i++) {
+    //   if (playerTotalsValues > winner) {
+    //     winner = playerTotalsValues;
+    //     tiedPlayers = [i];
+    //   } else if (playerTotals[playersNumber[i]] === winner) {
+    //     tiedPlayers.push(playersNumber[i]);
+    //   }
+    // }
+
+    // if (tiedPlayers.length > 1 && winner > 0) {
+    //   console.log("It's a Tie!", tiedPlayers);
+    // } else {
+    //   console.log("High Roll Winner: ", tiedPlayers.length > 0 ? tiedPlayers : players.find(player => playerTotals[player] === winner));
+    // }
+
+
+
+  // Low Roll Win Condition
+  const lowestRollWins = (players, playerTotals) => {
+    let winner = 1000000;
+    let tiedPlayers = [];
+    let playersNumber = Object.keys(players).length;
+    console.log("Players Number: ", playersNumber);
+    
+
+    for (let i = 0; i < playersNumber; i++) {
+      if (playerTotals < winner) {
+        winner = playerTotals[playersNumber[i]];
+        tiedPlayers = [playersNumber[i]];
+      } else if (playerTotals[playersNumber[i]] === winner) {
+        tiedPlayers.push(playersNumber[i]);
       }
     }
 
-    if (tiedPlayers) {
-      console.log("It's a Tie!", tiedPlayers);
-    } else {
-      console.log("Winner: ", players.find(player => playerTotals[player] === winner));
-    }
+    // if (tiedPlayers.length > 1 && winner < 1000000) {
+    //   console.log("It's a Tie!", tiedPlayers);
+    // } else {
+    //   console.log("Low Roll Winner: ", tiedPlayers.length > 0 ? tiedPlayers : players.find(player => playerTotals[player] === winner));
+    // }
   }
+
 
 
   const insertPlayerTotalsIntoHTML = () => {
@@ -167,7 +261,7 @@ window.onload = function() {
     findWinner(winCondition);
     insertPlayerRollsIntoHTML();
     insertPlayerTotalsIntoHTML();
-    // highestRollWins();
+    return players;
   })
 };
 
@@ -184,4 +278,3 @@ window.onload = function() {
   use numberOfPlayers to make a listOfPlayers update listOfPlayers
   -function to compare values in array and return winner
   */
-
